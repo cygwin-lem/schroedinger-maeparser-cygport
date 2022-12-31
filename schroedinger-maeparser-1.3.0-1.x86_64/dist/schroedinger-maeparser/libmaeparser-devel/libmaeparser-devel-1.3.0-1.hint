@@ -1,0 +1,6 @@
+category: Devel Libs
+requires: libmaeparser1
+sdesc: "A parser for Schrodinger Maestro (devel)"
+ldesc: "maeparser is a parser for Schrodinger Maestro files."
+external-source: schroedinger-maeparser
+
