@@ -1,10 +1,10 @@
 ################################
-inherit cmake ninja
+inherit cmake
 
 ################################
 
 NAME=schroedinger-maeparser
-VERSION=1.2.4
+VERSION=1.3.0
 RELEASE=1
 
 ################################
@@ -13,21 +13,26 @@ SUMMARY="A parser for Schrodinger Maestro files"
 DESCRIPTION="maeparser is a parser for Schrodinger Maestro files."
 HOMEPAGE="https://github.com/schrodinger/maeparser"
 
+LICENSE="MIT"
+# cf. https://www.cygwin.com/packaging-hint-files.html#pvr-src.hint
+#     https://spdx.org/licenses/MIT.html
+
 ################################
 ## Source from a git repository
 ################################
 GIT_REPO="https://github.com/schrodinger/maeparser"
 declare -A GIT_DATEHASH_BY_NAME=(
-  # git log --date=iso-strict --format='%cd/%H' -1 v1.2.4
-  [1.2.4]=2020-10-13T10:18:02-07:00/7e5ee4931149cfd8dc800147a7cd9fab5f96271e
+  # git log --date=iso-strict --format='%cd/%H' -1
+  [1.3.0]=2022-09-06T11:31:33-07:00/v1.3.0
+  [1.2.4]=2020-10-13T10:18:02-07:00/v1.2.4
 )
 REV_HASH="${GIT_DATEHASH_BY_NAME[${VERSION}]#*/}"
-REV_DATE="${GIT_DATEHASH_BY_NAME[${VERSION}]%/*}"
-REV_DATE_SHORT="${GIT_DATEHASH_BY_NAME[${VERSION}]%T*}"
+REV_DATE="${GIT_DATEHASH_BY_NAME[${VERSION}]%%/*}"
+REV_DATE_SHORT="${REV_DATE%%T*}"
 GIT_BASENAME="${GIT_REPO##*/}"
-SRC_URI="${GIT_REPO}/archive/${REV_HASH}.tar.gz"   # GitHub
+SRC_URI="${GIT_REPO}/archive/${REV_HASH}/${GIT_BASENAME}-${VERSION}.tar.gz"     # GitHub
 #SRC_URI="${GIT_REPO}/-/archive/${REV_HASH}/${GIT_BASENAME}-${REV_HASH}.tar.bz2" # GitLab
-SRC_DIR="${GIT_BASENAME}-${REV_HASH}"
+SRC_DIR="${GIT_BASENAME}-${REV_HASH#v}"
 
 ################################
 ## ABI for libmaeparser
@@ -55,8 +60,6 @@ CYGCMAKE_ARGS="
 ################################
 BUILD_REQUIRES="\
   pkg-config\
-  cmake\
-  ninja\
   libboost-devel\
   zlib-devel\
 "
